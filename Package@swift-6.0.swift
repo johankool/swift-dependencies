@@ -26,10 +26,10 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/combine-schedulers", from: "1.0.2"),
-    .package(url: "https://github.com/pointfreeco/swift-clocks", from: "1.0.4"),
-    .package(url: "https://github.com/pointfreeco/swift-concurrency-extras", from: "1.0.0"),
-    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.4.0"),
+    .package(url: "https://github.com/johankool/combine-schedulers", branch: "android-support"),
+    .package(url: "https://github.com/johankool/swift-clocks", branch: "android-support"),
+    .package(url: "https://github.com/pointfreeco/swift-concurrency-extras", branch: "main"),
+    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.2.2"),
     .package(url: "https://github.com/swiftlang/swift-syntax", "509.0.0"..<"601.0.0-prerelease"),
   ],
   targets: [
@@ -85,7 +85,7 @@ let package = Package(
   swiftLanguageModes: [.v6]
 )
 
-#if !os(macOS) && !os(WASI)
+#if !os(macOS) && !os(WASI) && !os(Android)
   package.products.append(
     .library(
       name: "DependenciesTestObserver",
@@ -95,7 +95,7 @@ let package = Package(
   )
 #endif
 
-#if !os(WASI)
+#if !os(WASI) && !os(Android)
   package.dependencies.append(
     .package(url: "https://github.com/pointfreeco/swift-macro-testing", from: "0.2.0")
   )
@@ -107,7 +107,8 @@ let package = Package(
         "DependenciesMacros",
         "DependenciesMacrosPlugin",
         .product(name: "MacroTesting", package: "swift-macro-testing"),
-      ]
+      ],
+      exclude: ["Dependencies.xctestplan"]
     ),
   ])
 #endif

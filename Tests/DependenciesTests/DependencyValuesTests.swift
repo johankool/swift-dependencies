@@ -15,7 +15,7 @@ final class DependencyValuesTests: XCTestCase {
   #endif
 
   func testMissingLiveValue() {
-    #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+    #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
       var line = 0
       XCTExpectFailure {
         withDependencies {
@@ -51,7 +51,7 @@ final class DependencyValuesTests: XCTestCase {
   }
 
   func testMissingLiveValue_Type() {
-    #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+    #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
       var line = 0
       XCTExpectFailure {
         withDependencies {
@@ -159,7 +159,7 @@ final class DependencyValuesTests: XCTestCase {
     }
   }
 
-  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testOptionalDependencyUndefined() {
       @Dependency(\.optionalDependency) var optionalDependency: String?
       XCTExpectFailure {
@@ -186,7 +186,7 @@ final class DependencyValuesTests: XCTestCase {
     }
   }
 
-  #if !os(Linux) && !os(WASI) && !os(Windows)
+  #if !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testDependencyDefaultIsReused_SegmentedByContext() {
       withDependencies {
         $0 = .init()
@@ -241,7 +241,7 @@ final class DependencyValuesTests: XCTestCase {
   func testAccessingTestDependencyFromLiveContext_WhenUpdatingDependencies() {
     @Dependency(\.reuseClient) var reuseClient: ReuseClient
 
-    #if !os(Linux) && !os(WASI) && !os(Windows)
+    #if !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
       withDependencies {
         $0.context = .live
       } operation: {
@@ -268,7 +268,7 @@ final class DependencyValuesTests: XCTestCase {
   func testUpdatingTestDependencyFromLiveContext_WhenUpdatingDependencies() {
     @Dependency(\.reuseClient) var reuseClient: ReuseClient
 
-    #if !os(Linux) && !os(WASI) && !os(Windows)
+    #if !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
       withDependencies {
         $0.context = .live
       } operation: {
@@ -437,7 +437,6 @@ final class DependencyValuesTests: XCTestCase {
       self.wait(for: [expectation], timeout: 1)
     }
 
-    @MainActor
     func testEscapingInFeatureModel_InstanceVariablePropagated() async {
       let expectation = self.expectation(description: "escape")
 
@@ -458,7 +457,7 @@ final class DependencyValuesTests: XCTestCase {
         FeatureModel()
       }
 
-      model.doSomething(expectation: expectation)
+      await model.doSomething(expectation: expectation)
       await fulfillment(of: [expectation], timeout: 1)
     }
 
@@ -748,7 +747,7 @@ final class DependencyValuesTests: XCTestCase {
     }
   }
 
-  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testPrepareDependencies_MultiplePreparesWithNoAccessBetween() {
       prepareDependencies {
         $0.date = DateGenerator { Date(timeIntervalSinceReferenceDate: 0) }
@@ -783,7 +782,7 @@ final class DependencyValuesTests: XCTestCase {
     }
   #endif
 
-  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testPrepareDependencies_MultiplePreparesWithAccessBetween() {
       prepareDependencies {
         $0.date = DateGenerator { Date(timeIntervalSinceReferenceDate: 0) }
@@ -822,7 +821,7 @@ final class DependencyValuesTests: XCTestCase {
     XCTAssertEqual(now, Date(timeIntervalSinceReferenceDate: 1729))
   }
 
-  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testPrepareDependencies_DependencyAccessBeforePrepare() {
       withDependencies {
         $0.context = .live
@@ -844,7 +843,7 @@ final class DependencyValuesTests: XCTestCase {
     }
   #endif
 
-  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testPrepareDependencies_PrepareContext() {
       prepareDependencies { $0.context = .live }
 
@@ -865,7 +864,7 @@ final class DependencyValuesTests: XCTestCase {
     XCTAssertEqual(client.get(), 42)
   }
 
-  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows)
+  #if DEBUG && !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     func testPrepareDependencies_alreadyCached() {
       withDependencies {
         $0.context = .live

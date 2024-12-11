@@ -4,7 +4,7 @@
   import XCTest
 
   final class DependencyEndpointTests: XCTestCase {
-    #if DEBUG && (os(iOS) || os(macOS) || os(tvOS) || os(watchOS))
+    #if DEBUG && (os(iOS) || os(macOS) || os(tvOS) || os(watchOS)) && canImport(XCTestDynamicOverlay)
       func testUnimplemented() {
         struct Client {
           @DependencyEndpoint

@@ -59,7 +59,7 @@ final class FireAndForgetTests: XCTestCase {
     }
   #endif
 
-  #if !os(Linux) && !os(WASI) && !os(Windows)
+  #if !os(Linux) && !os(WASI) && !os(Windows) && !os(Android)
     @MainActor
     func testLiveContext_DependencyAccess() async {
       await withDependencies {
